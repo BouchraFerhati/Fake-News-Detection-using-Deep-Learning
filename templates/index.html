@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fake News Detector</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Fake News Detector</h1>
+
+      <form action="/predict" method="post">
+        <div class="form-group">
+          <label for="inputType">Choose Input Type:</label>
+          <select class="form-control" id="inputType" name="inputType">
+            <option value="url">URL</option>
+            <option value="text">Text</option>
+          </select>
+        </div>
+
+        <div id="urlInput" class="form-group">
+          <label for="url">Enter News URL:</label>
+          <input type="url" class="form-control" id="url" name="url" />
+        </div>
+
+        <div id="textInput" class="form-group" style="display: none; margin-top: 100px">
+          <label for="news_text">Enter News Text:</label>
+          <textarea class="form-control" id="news_text" name="news_text" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Check News</button>
+      </form>
+
+      {% if selected_input %}
+      <div class="mt-4">
+        <h4>Selected Input Type:</h4>
+        <p><strong>Input Type:</strong> {{ selected_input }}</p>
+      </div>
+      {% endif %} {% if result %}
+      <div class="mt-4">
+        <h4>Result:</h4>
+        <p><strong>News URL:</strong> {{ url }}</p>
+        <p><strong>Prediction:</strong> {{ result }}</p>
+      </div>
+      {% endif %} {% if news_text %}
+      <div class="mt-4">
+        <h4>Scraped News:</h4>
+        <p>{{ news_text }}</p>
+      </div>
+      {% endif %} {% if error %}
+      <div class="mt-4 alert alert-danger"><strong>Error:</strong> {{ error }}</div>
+      {% endif %}
+    </div>
+
+    <script>
+      document.getElementById("inputType").addEventListener("change", function () {
+        var urlInput = document.getElementById("urlInput");
+        var textInput = document.getElementById("textInput");
+
+        if (this.value === "url") {
+          urlInput.style.display = "block";
+          textInput.style.display = "none";
+        } else {
+          urlInput.style.display = "none";
+          textInput.style.display = "block";
+        }
+      });
+    </script>
+  </body>
+</html>
